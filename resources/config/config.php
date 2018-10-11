@@ -12,7 +12,7 @@ return [
             __DIR__ . '/../schema/core.graphqls',
         ],
         'directives' => [
-            // fqcn's here
+            \Radic\GraphqlStreamsApiModule\GraphQL\Directives\RolesDirective::class
         ],
     ],
     'default_field_resolutions' => [

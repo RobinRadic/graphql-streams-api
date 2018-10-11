@@ -23,13 +23,7 @@ class GraphQLServiceProvider extends ServiceProvider
 
     protected function registerDirectives()
     {
-//        $classes  = [
-//            Directives\FilterDirective::class,
-//            Directives\PagesDirective::class,
-//            Directives\ConstraintsDirective::class,
-//            Directives\DefaultValueDirective::class,
-//        ];
-        $classes  = config('module::config.schema.directives', []);
+        $classes  = config('radic.module.graphql_streams_api::config.schema.directives', []);
         $registry = graphql()->directives();
         foreach ($classes as $directiveClass) {
             $registry->register(resolve($directiveClass));

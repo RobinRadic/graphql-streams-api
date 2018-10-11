@@ -6,11 +6,15 @@ use Illuminate\Routing\Router;
 class GraphqlStreamsApiModuleServiceProvider extends AddonServiceProvider
 {
     protected $commands = [
-        Console\GenerateApiCommand::class
+        Console\GenerateApiCommand::class,
+        \Nuwave\Lighthouse\Console\ClearCacheCommand::class,
+        \Nuwave\Lighthouse\Console\ValidateSchemaCommand::class,
+        \Nuwave\Lighthouse\Console\PrintSchemaCommand::class,
     ];
 
     protected $routes = [
-        'admin/graphql_streams_api' => 'Radic\GraphqlStreamsApiModule\Http\Controller\Admin\GraphQLStreamsApiController@index'
+        'admin/graphql_streams_api' => 'Radic\GraphqlStreamsApiModule\Http\Controller\Admin\GraphQLStreamsApiController@index',
+        'admin/graphql_streams_api/default_field_resolutions' => 'Radic\GraphqlStreamsApiModule\Http\Controller\Admin\GraphQLStreamsApiController@default_field_resolutions'
     ];
 
     protected $providers = [
@@ -22,8 +26,10 @@ class GraphqlStreamsApiModuleServiceProvider extends AddonServiceProvider
      */
     public function register()
     {
-        // Run extra pre-boot registration logic here.
-        // Use method injection or commands to bring in services.
+        $console = $this->app->make(\Illuminate\Contracts\Console\Kernel::class);
+        foreach ($this->commands as $command) {
+            $console->registerCommand($this->app->make($command));
+        }
     }
 
     /**

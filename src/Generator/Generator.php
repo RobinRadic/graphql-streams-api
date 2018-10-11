@@ -124,7 +124,7 @@ class Generator
      *
      * @param $name
      *
-     * @return \Illuminate\Config\Repository|\Illuminate\Support\Collection|mixed
+     * @return \Illuminate\Config\Repository|\Illuminate\Support\Collection
      * @throws \Exception
      */
     public function getSchemeBinding($name)

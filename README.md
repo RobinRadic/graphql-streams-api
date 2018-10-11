@@ -9,7 +9,7 @@ Please make sure you have a basic understanding of:
 - [Lighthouse](https://lighthouse-php.netlify.com)
 
 ## Preview
-A small usage preview of this module
+A small usage preview of this module.
 
 ### 1. Configure the bindings
 
@@ -43,10 +43,14 @@ return [
 
                 // The fields below will be resolved using the `default_field_resolutions`
                 // If you want, you can assign a custom type resolutions like above
-                'email',
                 'username',
                 'display_name',
                 'first_name',
+
+                // protect fields by requiring authentication and permissions
+                'email' => 'String @role(roles: ["admin"], operator: "AND")',
+                'email' => 'String @role(roles: ["user", "guest"], operator: "NOT")',
+                'email' => 'String @role(roles: ["admin", "user"], operator: "OR")',
                 'last_name',
                 'activated',
                 'enabled',

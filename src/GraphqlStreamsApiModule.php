@@ -25,9 +25,13 @@ class GraphqlStreamsApiModule extends Module
      * @var array
      */
     protected $sections = [
-        'overview'       => [
+        'overview'                  => [
             'slug' => 'overview',
             'href' => 'admin/graphql_streams_api',
+        ],
+        'default_field_resolutions' => [
+            'slug' => 'default_field_resolutions',
+            'href' => 'admin/graphql_streams_api/default_field_resolutions',
         ],
     ];
 

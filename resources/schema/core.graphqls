@@ -10,10 +10,9 @@ schema {
 type Query {
     me: User @auth
     version: String
-    users: [User!] @all(model: "Anomaly\\UsersModule\\User\\UserModel")
+    users: [User!] @roles(roles: ["admin"]) @all(model: "Anomaly\\UsersModule\\User\\UserModel")
     pages: [Page!] @all(model: "Anomaly\\PagesModule\\Page\\PageModel")
     menus: [NavigationMenu!] @all(model: "Anomaly\\NavigationModule\\Menu\\MenuModel")
     blocks: [Block!] @all(model: "Anomaly\\BlocksModule\\Block\\BlockModel")
     configuration: [Configuration!] @all(model: "Anomaly\\ConfigurationModule\\Configuration\\ConfigurationModel")
-    entries
 }
