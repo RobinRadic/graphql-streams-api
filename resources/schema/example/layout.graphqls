@@ -1,0 +1,94 @@
+
+
+type LayoutHeader {
+    style: Assoc!
+    class: Assoc!
+    # Background materiall color name (blue-grey-9)
+    color: String
+    # Show/Hides the component
+    hide: Boolean!
+    # Makes the component position sticky
+    static: Boolean!
+
+    # Menu items to show
+    menu: Assoc #[Menu]!
+    # Menu state
+    open: Boolean!
+
+    # Show/hides the top left toggle button, used for collapsing the left menu
+    showLeftToggle: Boolean!
+    # Show/hides the top right toggle button, used for collapsing the right menu
+    showRightToggle: Boolean!
+
+    # The title text
+    title: String!
+    # Show/hides the title
+    showTitle:Boolean!
+}
+type LayoutRight {
+    style: Assoc!
+    class: Assoc!
+    # Background material color name (blue-grey-9)
+    color: String
+    # Hides the component
+    hide: Boolean!
+    # Makes the component position sticky
+    static: Boolean!
+
+    # Menu items to show
+    menu: Assoc #[Menu]
+    # Menu state
+    open: Boolean!
+    collapsed:Boolean!
+    collapsible:Boolean!
+    collapsedWidth:Int!
+    width:Int!
+}
+type LayoutLeft {
+    style: Assoc!
+    class: Assoc!
+    # Background material color name (blue-grey-9)
+    color: String
+    # Hides the component
+    hide: Boolean!
+    # Makes the component position sticky
+    static: Boolean!
+
+    # Menu items to show
+    menu: Assoc #[Menu]
+    # Menu state
+    open: Boolean!
+    collapsed:Boolean!
+    collapsible:Boolean!
+    collapsedWidth:Int!
+    width:Int!
+}
+type LayoutPage {
+    style: Assoc!
+    class: Assoc!
+}
+type LayoutFooter {
+    style: Assoc!
+    class: Assoc!
+    # Background material color name (blue-grey-9)
+    color: String
+    # Hides the component
+    hide: Boolean!
+    # Makes the component position sticky
+    static: Boolean!
+
+    # Menu items to show
+    menu: Assoc #[Menu]
+    # Menu state
+    open: Boolean!
+}
+type Layout {
+    header: LayoutHeader!
+    left: LayoutLeft!
+    page: LayoutPage!
+    right: LayoutRight!
+    footer: LayoutFooter!
+}
+
+
+

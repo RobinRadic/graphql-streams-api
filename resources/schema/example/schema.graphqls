@@ -1,0 +1,42 @@
+#import ./constraints.graphqls
+#import ./menu.graphqls
+#import ./layout.graphqls
+#import ./meta.graphqls
+#import ./structure.graphqls
+
+schema {
+    query:Query
+}
+scalar Assoc @scalar
+
+type Query {
+    me: User @auth
+    codex: Codex!
+    config: Config!
+    projects:[Project!]! @constraints(resolver: "Codex\\Api\\Queries\\Projects@resolve")
+    project(key:ID):Project! @constraints(resolver: "Codex\\Api\\Queries\\Project@resolve")
+    revisions(projectKey: ID!) : [Revision!]!  @constraints(resolver: "Codex\\Api\\Queries\\Revisions@resolve")
+    revision(projectKey: ID! @rules(apply: ["required","string"]), revisionKey: ID) : Revision!  @constraints(resolver: "Codex\\Api\\Queries\\Revision@resolve")
+}
+
+type User {
+    id: ID!
+    name: String!
+}
+
+type Codex {
+    display_name: String!
+    description: String!
+    default_project: String!
+    addons:[String!]!
+    projects: [Project!]!
+}
+
+type Config {
+    name:String!
+    env:String!
+    debug:Boolean!
+    timezone:String!
+    locale:String!
+    fallback_locale:String!
+}

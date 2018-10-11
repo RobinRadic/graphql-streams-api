@@ -1,0 +1,15 @@
+
+
+
+type MetaAuthors {
+    name:String
+    email:String
+    website:String
+    role:String
+}
+type Meta {
+    authors:[MetaAuthors]!
+    icon:String
+    license:String
+    links:Assoc
+}

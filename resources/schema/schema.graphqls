@@ -1,0 +1,140 @@
+
+
+# stream: users.users
+type User {
+	id: ID
+	roles: [UserRole!] @hasMany
+	created_at: Date
+	updated_at: Date
+	deleted_at: Date
+	email: String
+	username: String
+	display_name: String
+	first_name: String
+	last_name: String
+	activated: Boolean
+	enabled: Boolean
+}
+
+
+
+
+# stream: users.roles
+type UserRole {
+	id: ID
+	name: String
+	slug: String
+	description: String
+	permissions: Boolean
+}
+
+
+
+
+# stream: pages.pages
+type Page {
+	id: ID
+	title: String
+	slug: String
+	path: String
+	type: PageType @belongsTo
+	parent: Page @belongsTo
+	children: [Page!] @hasMany
+	siblings: [Page!] @hasMany
+	visible: Boolean
+	enabled: Boolean
+	exact: Boolean
+	home: Boolean
+	meta_title: String
+	meta_description: String
+	themeLayout: String
+	allowedRoles: [UserRole!] @hasMany
+}
+
+
+
+
+# stream: pages.types
+type PageType {
+	id: ID
+	name: String
+	slug: String
+	description: String
+}
+
+
+
+
+# stream: navigation.menus
+type NavigationMenu {
+	name: String
+	slug: String
+	description: String
+	links: [NavigationLink!] @hasMany
+}
+
+
+
+
+# stream: navigation.links
+type NavigationLink {
+	menu: NavigationMenu @belongsTo
+	children: [NavigationLink!] @hasMany
+	target: String
+	class: String
+	parent: NavigationLink @belongsTo
+	allowedRoles: [UserRole!] @hasMany
+}
+
+
+
+
+# stream: configuration.configuration
+type Configuration {
+	scope: String
+	key: String
+	value: String
+}
+
+
+
+
+# stream: blocks.blocks
+type Block {
+	title: String
+	area: BlockArea @belongsTo
+	extension: Assoc
+	displayTitle: Boolean
+}
+
+
+
+
+# stream: blocks.areas
+type BlockArea {
+	name: String
+	slug: String
+	description: String
+}
+
+
+
+scalar Date @scalar(class: "DeInternetJongens\\LighthouseUtils\\Schema\\Scalars\\Date")
+scalar DateTimeTz @scalar(class: "DeInternetJongens\\LighthouseUtils\\Schema\\Scalars\\DateTimeTz")
+scalar Assoc @scalar
+scalar Mixed @scalar
+
+schema {
+    query: Query
+}
+
+type Query {
+    me: User @auth
+    version: String
+    users: [User!] @all(model: "Anomaly\\UsersModule\\User\\UserModel")
+    pages: [Page!] @all(model: "Anomaly\\PagesModule\\Page\\PageModel")
+    menus: [NavigationMenu!] @all(model: "Anomaly\\NavigationModule\\Menu\\MenuModel")
+    blocks: [Block!] @all(model: "Anomaly\\BlocksModule\\Block\\BlockModel")
+    configuration: [Configuration!] @all(model: "Anomaly\\ConfigurationModule\\Configuration\\ConfigurationModel")
+}
+

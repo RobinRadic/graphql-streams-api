@@ -1,0 +1,53 @@
+type RevisionConfig {
+    default:String!
+    allowed_config_files:[String]!
+    allow_php_config:Boolean!
+}
+type DocumentCacheConfig {
+    mode:String!
+    minutes:Int!
+}
+type DocumentConfig {
+    default:String!
+    extensions:[String]!
+    view:String
+    cache:DocumentCacheConfig!
+}
+type Project {
+    layout: Layout!
+    meta: Meta!
+    revision: RevisionConfig!
+    document: DocumentConfig!
+
+    key:ID!
+    display_name:String!
+    description:String!
+
+    revisions: [Revision!]!
+}
+
+
+type Revision {
+    layout: Layout!
+    meta: Meta!
+    document: DocumentConfig!
+
+    key: ID!
+    project: Project!
+
+    documents: [Document!]!
+}
+
+
+type Document {
+    meta: Meta!
+    layout: Layout!
+    revision: Revision!
+
+    key: ID!
+    path: String!
+    extension: String!
+    cache_mode: String!
+    last_modified: Int!
+    rendered:Boolean!
+}

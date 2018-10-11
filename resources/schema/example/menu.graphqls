@@ -1,0 +1,36 @@
+type Menu {
+    # The type of the menu item
+    type: String #MenuItemType
+    #This will display the children in the `left` or `right` side-menu Only available when type is set to   - `side-menu`
+    side:String # MenuItemSide
+    # only available when `type` is set to   - `link`
+    href:String
+    # only available when `type` is set to   - `link`   - `router-link`
+    target:String #MenuItemTarget
+    # Only available when type is set to   - `side-menu`   - `sub-menu`
+    children:[Menu]!
+    # Only available when type is set to   - `side-menu`   - `sub-menu`
+    expand:Boolean
+    # Makes the menu item selected
+    selected:Boolean
+    # The main text label
+    label:String
+    # If a menu item supports sublabels, it will show, otherwise not
+    sublabel:String
+    # Can optionally set a font-awesome icon. Use the `fa-` prefix.
+    icon:String
+    # The menu item coilor
+    color:String
+    # This is a ShortType. This will be transformed into a `router-link`. The link will point to a revision in the current project If `project` is also set, it will point to the a revision in that project
+    project:String
+    # This is a ShortType. This will be transformed into a `router-link`. The link will point to a revision in the current project If `project` is also set, it will point to the a revision in that project
+    revision:String
+    # This is a ShortType. This will be transformed into a `router-link`. The link will point to a document in the current revision of the current project If `revision` is also set, it will point to a document in that revision if `revision` and `project` are also set, it will point to a document in that project's revision
+    document:String
+    # This is a ShortType. If true, this item will get the projects appended to it's children
+    projects:Boolean
+    # This is a ShortType. If true, this item will get the revisions for the current project appended to it's children
+    revisions:Boolean
+}
+
+

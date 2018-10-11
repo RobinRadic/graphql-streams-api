@@ -1,0 +1,27 @@
+{
+    "name": "radic/graphql_streams_api-module",
+    "license": "MIT",
+    "description": "Effortlessly bind your PyroCMS Streams to the GraphQL API service. A great alternative to the non-free pro api-module addon.",
+    "type": "streams-addon",
+    "require": {
+        "nuwave/lighthouse": "~2.2",
+        "deinternetjongens/lighthouse-utils": "~0.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Radic\\GraphqlStreamsApiModule\\": "src/"
+        }
+    },
+    "authors": [
+        {"name": "Robin Radic", "role": "Author"}
+    ],
+    "homepage": "https://github.com/robinradic/graphql-streams-api",
+    "keywords": [
+        "pyrocms",
+        "api",
+        "rest",
+        "restfull",
+        "graphql",
+        "streams"
+    ]
+}
