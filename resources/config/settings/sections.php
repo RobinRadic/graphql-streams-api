@@ -4,7 +4,7 @@ return [
     [
         'tabs' => [
             'endpoint'      => [
-                'title'  => 'radic.module.graphql_streams_api::config.tab.endpoint',
+                'title'  => 'radic.module.graphql_streams_api::setting.sections.tab.endpoint',
                 'fields' => [
                     'prefix'
                 ],

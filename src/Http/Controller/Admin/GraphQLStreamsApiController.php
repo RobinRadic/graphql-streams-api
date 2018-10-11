@@ -8,6 +8,9 @@ class GraphQLStreamsApiController extends AdminController
 {
     public function index()
     {
-        return $this->view->make('pyradic.module.core::admin.api', []);
+        /** @var \Radic\GraphqlStreamsApiModule\Generator\Generator $generator */
+        $generator = graphql()->getGenerator();
+
+        return $this->view->make('module::admin.overview', []);
     }
 }
