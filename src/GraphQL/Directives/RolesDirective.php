@@ -27,7 +27,7 @@ class RolesDirective extends BaseDirective implements FieldMiddleware
                 throw new Error('Authentication is required to access this field.');
             }//                    $model = $this->getModelClass();
 
-            $roles    = $this->directiveArgValue('roles');
+            $roles    = $this->directiveArgValue('roles', $this->directiveArgValue('role'));
             $roles    = \is_array($roles) ? $roles : [ $roles ];
             $operator = strtoupper($this->directiveArgValue('operator', 'OR'));
             if ($operator !== 'OR' && $operator !== 'AND' && $operator !== 'NOT') {

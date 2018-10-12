@@ -56,12 +56,13 @@ return [
         'users::users'                 => [
             'type_name'   => 'User',
             'resolutions' => [
-                'id'         => 'ID',
-                'roles'      => '[UserRole!] @hasMany',
-                'created_at' => 'Date @roles(role: "admin")',
-                'updated_at' => 'Date @roles(role: "admin")',
-                'deleted_at' => 'Date @roles(role: "admin")',
-                'email'      => 'String @roles(role: "admin")',
+                'id'          => 'ID',
+                'roles'       => '[UserRole!] @hasMany',
+                'created_at'  => 'Date @roles(role: "admin")',
+                'updated_at'  => 'Date @roles(role: "admin")',
+                'deleted_at'  => 'Date @roles(role: "admin")',
+                'email'       => 'String @roles(role: "admin")',
+                'permissions' => '[String!]',
                 'username',
                 'display_name',
                 'first_name',
@@ -77,7 +78,7 @@ return [
                 'name',
                 'slug',
                 'description',
-                'permissions',
+                'permissions' => '[String!]',
             ],
         ],
         'pages::pages'                 => [
