@@ -124,7 +124,7 @@ This defines the streams that you want to be generated as GraphQL types.
 ```php
 'stream_bindings' => [
     // '{namespace}::{slug}'
-    'users::users` => [
+    'users::users' => [
         'type_name'   => 'User', // The resulting GraphQL schema type name.
         'resolutions' => [
             'slug',
@@ -132,7 +132,7 @@ This defines the streams that you want to be generated as GraphQL types.
             'roles' => '[UserRole!] @hasMany',
         ]
     ],
-    'users::roles` => [
+    'users::roles' => [
         'type_name'   => 'UserRole',
         'resolutions' => [
             'slug'
