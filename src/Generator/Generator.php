@@ -51,14 +51,10 @@ class Generator
         $text        = new TextBuffer();
         $streamNames = $this->getSchemeBindingNames();
         foreach ($streamNames as $name) {
-            $text->append()->append(
-                $this->generateStreamTypeDefinition($name)
-            )->append();
+            $text->append()->append($this->generateStreamTypeDefinition($name));
         }
         foreach ($importPaths as $path) {
-            $text->append()->append(
-                $fs->get($path)
-            )->append();
+            $text->append()->append($fs->get($path));
         }
         return $text->toString();
     }
@@ -82,7 +78,6 @@ class Generator
 
         $text = with(new TextBuffer());
         $text
-            ->append()
             ->append("# stream: {$namespace}.{$slug}")
             ->append("type {$typeName} {")
             ->indent();
@@ -101,9 +96,7 @@ class Generator
             $text->append("{$fieldSlug}: {$graphType}");
         }
 
-        $text->unindent()
-            ->append('}')
-            ->append();
+        $text->unindent()->append('}');
 
         return $text->toString();
     }
