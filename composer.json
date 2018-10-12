@@ -3,8 +3,10 @@
     "license": "MIT",
     "description": "Effortlessly bind your PyroCMS Streams to the GraphQL API service. A great alternative to the non-free pro api-module addon.",
     "type": "streams-addon",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
-        "nuwave/lighthouse": "~2.2",
+        "nuwave/lighthouse": "dev-master#a0ba2e80dd59adaafd55cdb4b8e60b874e232139 as ~2.2",
         "deinternetjongens/lighthouse-utils": "~0.2"
     },
     "autoload": {

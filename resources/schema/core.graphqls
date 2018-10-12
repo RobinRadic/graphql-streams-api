@@ -1,7 +1,7 @@
 scalar Date @scalar(class: "DeInternetJongens\\LighthouseUtils\\Schema\\Scalars\\Date")
 scalar DateTimeTz @scalar(class: "DeInternetJongens\\LighthouseUtils\\Schema\\Scalars\\DateTimeTz")
-scalar Assoc @scalar
-scalar Mixed @scalar
+scalar Assoc @scalar(class: "Radic\\GraphqlStreamsApiModule\\GraphQL\\Scalars\\Assoc")
+scalar Mixed @scalar(class: "Radic\\GraphqlStreamsApiModule\\GraphQL\\Scalars\\Mixed")
 
 schema {
     query: Query
@@ -9,10 +9,16 @@ schema {
 
 type Query {
     me: User @auth
-    version: String
+    version: String @default(value: "1.0.0")
     users: [User!] @roles(roles: ["admin"]) @all(model: "Anomaly\\UsersModule\\User\\UserModel")
-    pages: [Page!] @all(model: "Anomaly\\PagesModule\\Page\\PageModel")
+    pages: [Page!] @queryablePaginate(builder: "Radic\\GraphqlStreamsApiModule\\GraphQL\\QueryablePaginateBuilder@posts", model: "Anomaly\\PagesModule\\Page\\PageModel") #@all(model: "Anomaly\\PagesModule\\Page\\PageModel")
     menus: [NavigationMenu!] @all(model: "Anomaly\\NavigationModule\\Menu\\MenuModel")
     blocks: [Block!] @all(model: "Anomaly\\BlocksModule\\Block\\BlockModel")
     configuration: [Configuration!] @all(model: "Anomaly\\ConfigurationModule\\Configuration\\ConfigurationModel")
+    posts: [Post!] @queryablePaginate(builder: "Radic\\GraphqlStreamsApiModule\\GraphQL\\QueryablePaginateBuilder@posts")
+
+}
+
+type Stream @model(class: "Anomaly\\Streams\\Platform\\Stream\\StreamModel"){
+    id: ID! @globalId
 }

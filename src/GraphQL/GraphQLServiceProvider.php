@@ -14,6 +14,7 @@ class GraphQLServiceProvider extends ServiceProvider
         $this->app->alias(GraphApi::class, 'graphql');
         $this->app->register(\Nuwave\Lighthouse\Providers\LighthouseServiceProvider::class);
         $this->app->alias(GraphApi::class, 'graphql');
+        $this->app->register(\DeInternetJongens\LighthouseUtils\ServiceProvider::class);
     }
 
     public function boot()
@@ -33,17 +34,18 @@ class GraphQLServiceProvider extends ServiceProvider
     protected function overrideVendorConfig()
     {
         $this->app[ 'config' ]->set('lighthouse', [
-            'route'      => config('radic.module.graphql_streams_api::config.endpoint'),
-            'schema'     => [
+            'route'           => config('radic.module.graphql_streams_api::config.endpoint'),
+            'schema'          => [
                 'register' => config('radic.module.graphql_streams_api::config.schema.output'), // __DIR__ . '/../../resources/schema/schema.graphqls',
             ],
-            'namespaces' => [
+            'namespaces'      => [
                 'models'    => 'Radic\\GraphqlStreamsApiModule\\GraphQL\\Models',
                 'mutations' => 'Radic\\GraphqlStreamsApiModule\\GraphQL\\Mutations',
                 'queries'   => 'Radic\\GraphqlStreamsApiModule\\GraphQL\\Queries',
                 'scalars'   => 'Radic\\GraphqlStreamsApiModule\\GraphQL\\Scalars',
             ],
-            'controller' => \Radic\GraphqlStreamsApiModule\Http\Controller\ApiGraphQLController::class . '@query',
+            'controller'      => \Radic\GraphqlStreamsApiModule\Http\Controller\ApiGraphQLController::class . '@query',
+            'global_id_field' => 'id',
 //        'route_name'       => 'graphql',
 //        'route_enable_get' => true,
 //            'security'   => [

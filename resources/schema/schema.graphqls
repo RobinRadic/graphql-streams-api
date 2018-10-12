@@ -1,13 +1,12 @@
 
-
 # stream: users.users
 type User {
 	id: ID
 	roles: [UserRole!] @hasMany
-	created_at: Date
-	updated_at: Date
-	deleted_at: Date
-	email: String
+	created_at: Date @roles(role: "admin")
+	updated_at: Date @roles(role: "admin")
+	deleted_at: Date @roles(role: "admin")
+	email: String @roles(role: "admin")
 	username: String
 	display_name: String
 	first_name: String
@@ -15,9 +14,6 @@ type User {
 	activated: Boolean
 	enabled: Boolean
 }
-
-
-
 
 # stream: users.roles
 type UserRole {
@@ -27,9 +23,6 @@ type UserRole {
 	description: String
 	permissions: Boolean
 }
-
-
-
 
 # stream: pages.pages
 type Page {
@@ -51,9 +44,6 @@ type Page {
 	allowedRoles: [UserRole!] @hasMany
 }
 
-
-
-
 # stream: pages.types
 type PageType {
 	id: ID
@@ -62,9 +52,6 @@ type PageType {
 	description: String
 }
 
-
-
-
 # stream: navigation.menus
 type NavigationMenu {
 	name: String
@@ -72,9 +59,6 @@ type NavigationMenu {
 	description: String
 	links: [NavigationLink!] @hasMany
 }
-
-
-
 
 # stream: navigation.links
 type NavigationLink {
@@ -86,18 +70,12 @@ type NavigationLink {
 	allowedRoles: [UserRole!] @hasMany
 }
 
-
-
-
 # stream: configuration.configuration
 type Configuration {
 	scope: String
 	key: String
 	value: String
 }
-
-
-
 
 # stream: blocks.blocks
 type Block {
@@ -107,9 +85,6 @@ type Block {
 	displayTitle: Boolean
 }
 
-
-
-
 # stream: blocks.areas
 type BlockArea {
 	name: String
@@ -117,12 +92,39 @@ type BlockArea {
 	description: String
 }
 
+# stream: posts.posts
+type Post {
+	id: ID
+	title: String
+	summary: String
+	slug: String
+	type: PostType @belongsTo
+	publish_at: DateTimeTz
+	author: User @belongsTo
+	category: PostCategory @belongsTo
+	featured: Boolean
+	enabled: Boolean
+	tags: [String!]
+}
 
+# stream: posts.types
+type PostType {
+	name: String
+	slug: String
+	description: String
+}
+
+# stream: posts.categories
+type PostCategory {
+	name: String
+	slug: String
+	description: String
+}
 
 scalar Date @scalar(class: "DeInternetJongens\\LighthouseUtils\\Schema\\Scalars\\Date")
 scalar DateTimeTz @scalar(class: "DeInternetJongens\\LighthouseUtils\\Schema\\Scalars\\DateTimeTz")
-scalar Assoc @scalar
-scalar Mixed @scalar
+scalar Assoc @scalar(class: "Radic\\GraphqlStreamsApiModule\\GraphQL\\Scalars\\Assoc")
+scalar Mixed @scalar(class: "Radic\\GraphqlStreamsApiModule\\GraphQL\\Scalars\\Mixed")
 
 schema {
     query: Query
@@ -130,11 +132,58 @@ schema {
 
 type Query {
     me: User @auth
-    version: String
+    version: String @default(value: "1.0.0")
     users: [User!] @roles(roles: ["admin"]) @all(model: "Anomaly\\UsersModule\\User\\UserModel")
-    pages: [Page!] @all(model: "Anomaly\\PagesModule\\Page\\PageModel")
+    pages: [Page!] @queryablePaginate(builder: "Radic\\GraphqlStreamsApiModule\\GraphQL\\QueryablePaginateBuilder@posts", model: "Anomaly\\PagesModule\\Page\\PageModel") #@all(model: "Anomaly\\PagesModule\\Page\\PageModel")
     menus: [NavigationMenu!] @all(model: "Anomaly\\NavigationModule\\Menu\\MenuModel")
     blocks: [Block!] @all(model: "Anomaly\\BlocksModule\\Block\\BlockModel")
     configuration: [Configuration!] @all(model: "Anomaly\\ConfigurationModule\\Configuration\\ConfigurationModel")
+    posts: [Post!] @queryablePaginate(builder: "Radic\\GraphqlStreamsApiModule\\GraphQL\\QueryablePaginateBuilder@posts")
+
 }
 
+type Stream @model(class: "Anomaly\\Streams\\Platform\\Stream\\StreamModel"){
+    id: ID! @globalId
+}
+
+input QueryConstraints {
+    where: [WhereConstraint!]
+    orderBy: [OrderByConstraint!]
+}
+
+# We need this as the value for a WhereConstraint can basically be anything
+#scalar Mixed @scalar
+
+input WhereConstraint {
+    column: String!
+    operator: Operator = EQUALS
+    value: Mixed!
+    boolean: LogicalOperator = AND
+}
+
+enum Operator {
+    IN @enum(value: "IN")
+    NOT_IN @enum(value: "NOT IN")
+    LIKE @enum(value: "LIKE")
+    NOT_LIKE @enum(value: "NOT LIKE")
+    EQUALS @enum(value: "=")
+    NOT_EQUALS @enum(value: "!=")
+    GREATER_THAN @enum(value: ">")
+    GREATER_THAN_OR_EQUAL @enum(value: ">=")
+    LESS_THAN @enum(value: "<")
+    LESS_THAN_OR_EQUAL @enum(value: "<=")
+}
+input OrderByConstraint {
+    column: String!
+    order: Order!
+}
+
+enum Order {
+    ASC @enum(value: "ASC")
+    DESC @enum(value: "DESC")
+}
+
+enum LogicalOperator {
+    AND @enum(value: "AND")
+    OR @enum(value: "OR")
+}

@@ -1,0 +1,41 @@
+input QueryConstraints {
+    where: [WhereConstraint!]
+    orderBy: [OrderByConstraint!]
+}
+
+# We need this as the value for a WhereConstraint can basically be anything
+#scalar Mixed @scalar
+
+input WhereConstraint {
+    column: String!
+    operator: Operator = EQUALS
+    value: Mixed!
+    boolean: LogicalOperator = AND
+}
+
+enum Operator {
+    IN @enum(value: "IN")
+    NOT_IN @enum(value: "NOT IN")
+    LIKE @enum(value: "LIKE")
+    NOT_LIKE @enum(value: "NOT LIKE")
+    EQUALS @enum(value: "=")
+    NOT_EQUALS @enum(value: "!=")
+    GREATER_THAN @enum(value: ">")
+    GREATER_THAN_OR_EQUAL @enum(value: ">=")
+    LESS_THAN @enum(value: "<")
+    LESS_THAN_OR_EQUAL @enum(value: "<=")
+}
+input OrderByConstraint {
+    column: String!
+    order: Order!
+}
+
+enum Order {
+    ASC @enum(value: "ASC")
+    DESC @enum(value: "DESC")
+}
+
+enum LogicalOperator {
+    AND @enum(value: "AND")
+    OR @enum(value: "OR")
+}
