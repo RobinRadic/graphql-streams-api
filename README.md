@@ -1,5 +1,15 @@
 # PyroCMS GraphQL Streams Api Module
 
+- [Introduction](#introduction)
+- [Preview](#preview)
+- [Documentation](#documentation)
+    - [Installation](#installation)
+    - [Customization](#customization)
+    - [Generate](#generate)
+- [License](#license)
+
+
+## Introduction
 This module aims to provide an easy yet flexiable way to bind your PyroCMS Streams to a GraphQL API.
 This module integrates `nuwave/lighthouse` with PyroCMS Streams.
 
@@ -77,7 +87,73 @@ php artisan api:generate
 
 ## Documentation
 
-*Todo... In the meanwhile, just check the configuration file. It's pretty much self-explaining.*
+### Installation
+
+**Add to composer**
+```
+composer require radic/graphql_streams_api-module
+```
+
+**Install addon**
+```
+php artisan addon:install radic.module.graphql_streams_api
+```
+
+**Publish the addon**
+
+To customize and define your GraphQL service use the `api:publish` command.
+
+This will publish the configuration and schema files to `resources/{application}/addons/radic/graphql_streams_api`.
+
+```
+php artisan api:publish
+```
+
+### Customization
+You can customize/define the GraphQL service in `resources/{application}/addons/radic/graphql_streams_api`:
+- `config/config.php`
+- `schema/queryable.graphqls`
+- `schema/core.graphqls`
+
+#### config.schema
+- `output`  : The path where the schema will be generated.
+- `imports` : Paths to other schema definition files that will be included in the generated schema output.
+
+#### config.stream_bindings
+This defines the streams that you want to be generated as GraphQL types.
+```php
+'stream_bindings' => [
+    // '{namespace}::{slug}'
+    'users::users` => [
+        'type_name'   => 'User', // The resulting GraphQL schema type name.
+        'resolutions' => [
+            'slug',
+            'title',
+            'roles' => '[UserRole!] @hasMany',
+        ]
+    ],
+    'users::roles` => [
+        'type_name'   => 'UserRole',
+        'resolutions' => [
+            'slug'
+        ]
+    ]
+]
+```
+
+The `resolutions` are used to define the streams fields that should be in the GraphQL type.
+You can either:
+- Define only stream field name (like 'slugs'). The generator will use the `default_field_bindings` to resolve the GraphQL type automatically.
+- Define the stream field name and a custom GraphQL field type. This is usually done with relationship fields or if you want to add some directive(s) to the field.
+
+### Generate
+After modifying the `config.php` or any of the defined `schema.imports` files you need to generate the output schema by running
+```
+php artisan api:generate
+```
+
+This will generate the schema in the configured `schema.output` file path.
+
 
 ## License
 

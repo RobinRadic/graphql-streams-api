@@ -55,6 +55,7 @@ type PageType {
 
 # stream: navigation.menus
 type NavigationMenu {
+	id: ID
 	name: String
 	slug: String
 	description: String
@@ -133,16 +134,31 @@ schema {
 
 type Query {
     me: User @auth
-    version: String @default(value: "1.0.0")
+    version: String
 
     users: [User!] @roles(roles: ["admin"]) @queryablePaginate(model: "Anomaly\\UsersModule\\User\\UserModel")
     user(id: ID! @eq): User @roles(roles: ["admin"]) @find(model: "Anomaly\\UsersModule\\User\\UserModel")
+    userByUsername(username: String! @eq): User @roles(roles: ["admin"]) @find(model: "Anomaly\\UsersModule\\User\\UserModel")
+    userByEmail(email: String! @eq): User @roles(roles: ["admin"]) @find(model: "Anomaly\\UsersModule\\User\\UserModel")
+
+    roles: [UserRole!] @queryablePaginate(model: "Anomaly\\UsersModule\\Role\\RoleModel")
+    role(id: ID! @eq): UserRole @find(model: "Anomaly\\UsersModule\\Role\\RoleModel")
+    roleBySlug(slug: String! @eq): UserRole @find(model: "Anomaly\\UsersModule\\Role\\RoleModel")
 
     pages: [Page!] @queryablePaginate(model: "Anomaly\\PagesModule\\Page\\PageModel")
+    page(id: ID! @eq): Page @find(model: "Anomaly\\PagesModule\\Page\\PageModel")
+    pageBySlug(slug: ID! @eq): Page @find(model: "Anomaly\\PagesModule\\Page\\PageModel")
+    pageByPath(path: ID! @eq): Page @find(model: "Anomaly\\PagesModule\\Page\\PageModel")
+
     menus: [NavigationMenu!] @queryablePaginate(model: "Anomaly\\NavigationModule\\Menu\\MenuModel")
+    menu(id: ID! @eq): NavigationMenu @find(model: "Anomaly\\NavigationModule\\Menu\\MenuModel")
+    menuBySlug(slug: ID! @eq): NavigationMenu @find(model: "Anomaly\\NavigationModule\\Menu\\MenuModel")
+
     blocks: [Block!] @queryablePaginate(model: "Anomaly\\BlocksModule\\Block\\BlockModel")
     configuration: [Configuration!] @all(model: "Anomaly\\ConfigurationModule\\Configuration\\ConfigurationModel")
+
     posts: [Post!] @queryablePaginate(model: "Anomaly\\PostsModule\\Post\\PostModel")
+    post(id: ID! @eq): Post @find(model: "Anomaly\\PostsModule\\Post\\PostModel")
 
 }
 

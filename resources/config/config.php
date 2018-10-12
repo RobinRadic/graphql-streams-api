@@ -1,6 +1,5 @@
 <?php
 
-
 return [
     'endpoint'                  => [
         'prefix'     => '',
@@ -46,7 +45,7 @@ return [
         'anomaly.field_type.slider'      => 'String',
         'anomaly.field_type.slug'        => 'String',
         'anomaly.field_type.state'       => 'String',
-        'anomaly.field_type.tags'        => 'String',
+        'anomaly.field_type.tags'        => '[String!]',
         'anomaly.field_type.text'        => 'String',
         'anomaly.field_type.textarea'    => 'String',
         'anomaly.field_type.url'         => 'String',
@@ -55,6 +54,31 @@ return [
     'stream_bindings'           => [
         'users::users'                 => [
             'type_name'   => 'User',
+            'query'       => [
+                'users' => [
+                    'operation'         => 'collection',
+                    'queryablePaginate' => true, // true || 'Namespace\ModelClass'
+//                    'all'               => true, // true || 'Namespace\ModelClass'
+                    'roles'             => 'admin',
+//                    'roles'             => [ 'user', 'admin' ],
+//                    'roles'             => [
+//                        'roles'    => [ 'user', 'admin' ],
+//                        'operator' => 'NOT',
+//                    ],
+//                    'middleware' => []
+                ],
+                'user'  => [
+                    'operation'  => 'find',
+                    'primaryKey' => 'id',
+                    'finders'    => [
+                        'id',
+                        'username',
+                        'email',
+                    ],
+                    'roles'      => 'admin',
+                    'middleware' => [],
+                ],
+            ],
             'resolutions' => [
                 'id'          => 'ID',
                 'roles'       => '[UserRole!] @hasMany',
@@ -74,7 +98,7 @@ return [
         'users::roles'                 => [
             'type_name'   => 'UserRole',
             'resolutions' => [
-                'id' => 'ID',
+                'id'          => 'ID',
                 'name',
                 'slug',
                 'description',
@@ -114,6 +138,7 @@ return [
         'navigation::menus'            => [
             'type_name'   => 'NavigationMenu',
             'resolutions' => [
+                'id' => 'ID',
                 'name',
                 'slug',
                 'description',

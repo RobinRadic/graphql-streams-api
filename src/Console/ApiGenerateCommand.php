@@ -2,13 +2,15 @@
 
 namespace Radic\GraphqlStreamsApiModule\Console;
 
+use Anomaly\Streams\Platform\Addon\AddonCollection;
+use Anomaly\Streams\Platform\Application\Application;
 use Anomaly\Streams\Platform\Stream\Contract\StreamRepositoryInterface;
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Radic\GraphqlStreamsApiModule\Generator\Generator;
 use Radic\GraphqlStreamsApiModule\Support\FileWatcher;
 
-class GenerateApiCommand extends Command
+class ApiGenerateCommand extends Command
 {
     use DispatchesJobs;
 
@@ -21,6 +23,9 @@ class GenerateApiCommand extends Command
 
     protected $importFilePaths;
 
+    /** @var \Anomaly\Streams\Platform\Addon\Addon */
+    protected $addon;
+
     /**
      * handle method
      *
@@ -31,7 +36,7 @@ class GenerateApiCommand extends Command
      * @return void
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function handle(Generator $generator, FileWatcher $watcher)
+    public function handle(Generator $generator, FileWatcher $watcher, AddonCollection $addons, Application $application)
     {
         $this->generator       = $generator;
         $this->outputFilePath  = realpath(config('radic.module.graphql_streams_api::config.schema.output'));
@@ -43,6 +48,18 @@ class GenerateApiCommand extends Command
             return;
         }
 
+
+        $this->addon     = $addons->get('radic.module.graphql_streams_api');
+        $unpublishedPath = $this->addon->getPath('resources');
+        $publishedPath   = $application->getResourcesPath(
+            'addons/' .
+            $this->addon->getVendor() . '/' .
+            $this->addon->getSlug() . '-' .
+            $this->addon->getType()
+        );
+        $isPublished     = starts_with($this->outputFilePath, $publishedPath) && is_dir($publishedPath);
+        $watchPath       = $isPublished ? $publishedPath : $unpublishedPath;
+
         $this->info('Watching for changes...');
         $watcher
             ->modified(function ($file) {
@@ -51,7 +68,7 @@ class GenerateApiCommand extends Command
                 }
                 $this->generate();
             })
-            ->watch(\dirname(__DIR__, 2) . '/resources', '*/*.{*}');
+            ->watch($watchPath, '*/*.{*}');
     }
 
     /**

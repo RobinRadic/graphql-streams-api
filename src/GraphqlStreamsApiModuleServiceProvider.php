@@ -6,19 +6,20 @@ use Illuminate\Routing\Router;
 class GraphqlStreamsApiModuleServiceProvider extends AddonServiceProvider
 {
     protected $commands = [
-        Console\GenerateApiCommand::class,
+        Console\ApiGenerateCommand::class,
+        Console\ApiPublishCommand::class,
         \Nuwave\Lighthouse\Console\ClearCacheCommand::class,
         \Nuwave\Lighthouse\Console\ValidateSchemaCommand::class,
         \Nuwave\Lighthouse\Console\PrintSchemaCommand::class,
     ];
 
     protected $routes = [
-        'admin/graphql_streams_api' => 'Radic\GraphqlStreamsApiModule\Http\Controller\Admin\GraphQLStreamsApiController@index',
-        'admin/graphql_streams_api/default_field_resolutions' => 'Radic\GraphqlStreamsApiModule\Http\Controller\Admin\GraphQLStreamsApiController@default_field_resolutions'
+        'admin/graphql_streams_api'                           => 'Radic\GraphqlStreamsApiModule\Http\Controller\Admin\GraphQLStreamsApiController@index',
+        'admin/graphql_streams_api/default_field_resolutions' => 'Radic\GraphqlStreamsApiModule\Http\Controller\Admin\GraphQLStreamsApiController@default_field_resolutions',
     ];
 
     protected $providers = [
-        GraphQL\GraphQLServiceProvider::class
+        GraphQL\GraphQLServiceProvider::class,
     ];
 
     /**
