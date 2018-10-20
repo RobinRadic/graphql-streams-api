@@ -10,6 +10,7 @@ return [
         'imports'    => [
             __DIR__ . '/../schema/core.graphqls',
             __DIR__ . '/../schema/queryable.graphqls',
+            __DIR__ . '/../schema/menu-tree.graphqls',
         ],
         'directives' => [
             \Radic\GraphqlStreamsApiModule\GraphQL\Directives\RolesDirective::class,

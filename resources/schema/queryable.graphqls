@@ -3,9 +3,6 @@ input QueryConstraints {
     orderBy: [OrderByConstraint!]
 }
 
-# We need this as the value for a WhereConstraint can basically be anything
-#scalar Mixed @scalar
-
 input WhereConstraint {
     column: String!
     operator: Operator = EQUALS

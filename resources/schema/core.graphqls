@@ -28,6 +28,7 @@ type Query {
     menus: [NavigationMenu!] @queryablePaginate(model: "Anomaly\\NavigationModule\\Menu\\MenuModel")
     menu(id: ID! @eq): NavigationMenu @find(model: "Anomaly\\NavigationModule\\Menu\\MenuModel")
     menuBySlug(slug: ID! @eq): NavigationMenu @find(model: "Anomaly\\NavigationModule\\Menu\\MenuModel")
+    menuTree(identifier: ID!): MenuTree  @field(resolver: "Radic\\GraphqlStreamsApiModule\\GraphQL\\Fields\\MenuTreeField@resolve")
 
     blocks: [Block!] @queryablePaginate(model: "Anomaly\\BlocksModule\\Block\\BlockModel")
     configuration: [Configuration!] @all(model: "Anomaly\\ConfigurationModule\\Configuration\\ConfigurationModel")

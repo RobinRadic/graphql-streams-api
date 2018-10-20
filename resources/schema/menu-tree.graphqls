@@ -1,0 +1,49 @@
+type MenuTreeItemEntryPage {
+    id:ID!
+    sort_order:Int!
+    str_id:String!
+    slug:String!
+    path:String!
+    title:String!
+    home:Boolean!
+    visible:Boolean
+    enabled:Boolean
+    exact:Boolean
+    home:Boolean
+}
+
+type MenuTreeItemEntry {
+    id:ID!
+    sort_order:Int!
+    title:String!
+    description:String
+    page:MenuTreeItemEntryPage
+}
+
+type MenuTreeItemType {
+    id:String!
+    name:String!
+    namespace:String!
+    type:String!
+}
+
+type MenuTreeItem {
+    id:ID!
+    children:[MenuTreeItem!]
+    type: MenuTreeItemType!
+    entry: MenuTreeItemEntry!
+    target:String
+    class:String
+    parent_id:String
+    url:String
+    title:String
+}
+
+type MenuTree {
+    id:ID!
+    sort_order:Int!
+    slug:String!
+    name:String!
+    description:String
+    children:[MenuTreeItem!]
+}
