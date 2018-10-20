@@ -112,6 +112,7 @@ return [
                 'title',
                 'slug',
                 'path',
+                'content'      => 'String @field(resolver: "Radic\\\GraphqlStreamsApiModule\\\GraphQL\\\Fields\\\PageContentField@resolve")',
                 'type'         => 'PageType @belongsTo',
                 'parent'       => 'Page @belongsTo',
                 'children'     => '[Page!] @hasMany',
@@ -138,7 +139,7 @@ return [
         'navigation::menus'            => [
             'type_name'   => 'NavigationMenu',
             'resolutions' => [
-                'id' => 'ID',
+                'id'    => 'ID',
                 'name',
                 'slug',
                 'description',
